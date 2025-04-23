@@ -15,27 +15,44 @@ def load_answers():
     with open(path, "r") as f:
         return json.load(f)  # List of {"question": ..., "answer": ...}
 
+# def get_answer(question, qa_list):
+#     # Exact and case-insensitive match
+#     for qa in qa_list:
+#         if question.strip() == qa["question"]:
+#             return qa["answer"]
+#     q_lower = question.strip().lower()
+#     for qa in qa_list:
+#         if q_lower == qa["question"].lower():
+#             return qa["answer"]
+#     # Fuzzy/keyword match
+#     keywords = q_lower.split()
+#     scored = []
+#     for qa in qa_list:
+#         q_text = qa["question"].lower()
+#         score = sum(1 for k in keywords if k in q_text)
+#         if score > 0:
+#             scored.append((score, qa["answer"]))
+#     if scored:
+#         scored.sort(reverse=True)
+#         return scored[0][1]
+#     return "I don't have information about that in my magical archives. Try asking about Harry Potter characters, spells, or locations!"
 def get_answer(question, qa_list):
-    # Exact and case-insensitive match
-    for qa in qa_list:
-        if question.strip() == qa["question"]:
-            return qa["answer"]
-    q_lower = question.strip().lower()
-    for qa in qa_list:
-        if q_lower == qa["question"].lower():
-            return qa["answer"]
-    # Fuzzy/keyword match
-    keywords = q_lower.split()
-    scored = []
-    for qa in qa_list:
-        q_text = qa["question"].lower()
-        score = sum(1 for k in keywords if k in q_text)
-        if score > 0:
-            scored.append((score, qa["answer"]))
-    if scored:
-        scored.sort(reverse=True)
-        return scored[0][1]
-    return "I don't have information about that in my magical archives. Try asking about Harry Potter characters, spells, or locations!"
+    # Convert list of dicts to question:answer dictionary
+    qa_dict = {qa["question"]: qa["answer"] for qa in qa_list}
+    
+    # Try exact match first
+    exact_answer = qa_dict.get(question.strip())
+    if exact_answer:
+        return exact_answer
+    
+    # Try case-insensitive match using normalized dictionary
+    normalized_dict = {q.lower(): a for q, a in qa_dict.items()}
+    normalized_answer = normalized_dict.get(question.strip().lower())
+    if normalized_answer:
+        return normalized_answer
+    
+    # No matches found
+    return "I don't have information about that in my magical archives. Please ask about Harry Potter characters, spells, or locations!"
 
 def generate_source_documents(question, answer):
     book_sources = [

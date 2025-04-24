@@ -38,14 +38,13 @@ def load_answers():
 #     return "I don't have information about that in my magical archives. Try asking about Harry Potter characters, spells, or locations!"
 def get_answer(question, qa_list):
     # Convert list of dicts to question:answer dictionary
-    qa_dict = {qa["question"]: qa["answer"] for qa in qa_list}
+    qa_chain = {qa["question"]: qa["answer"] for qa in qa_list}
     
-    exact_answer = qa_dict.get(question.strip())
+    exact_answer = qa_chain.get(question.strip())
     if exact_answer:
         return exact_answer
     
-    # Try case-insensitive match using normalized dictionary
-    normalized_dict = {q.lower(): a for q, a in qa_dict.items()}
+    normalized_dict = {q.lower(): a for q, a in qa_chain.items()}
     normalized_answer = normalized_dict.get(question.strip().lower())
     if normalized_answer:
         return normalized_answer

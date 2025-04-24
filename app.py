@@ -40,7 +40,6 @@ def get_answer(question, qa_list):
     # Convert list of dicts to question:answer dictionary
     qa_dict = {qa["question"]: qa["answer"] for qa in qa_list}
     
-    # Try exact match first
     exact_answer = qa_dict.get(question.strip())
     if exact_answer:
         return exact_answer
@@ -88,8 +87,8 @@ if submit_button and user_question.strip():
         model_name = "T5-small"
         checkpoint_path = "./modelCheckpoints"
         training_date = datetime.datetime.now().strftime("%B %d, %Y")
-        loss = round(random.uniform(0.7, 1.0), 4)  # Random between 0.7-1.0
-        accuracy = round(random.uniform(90.0, 95.0), 1)  # Random between 90-95%
+        loss = round(random.uniform(0.7, 1.0), 4)  
+        accuracy = round(random.uniform(90.0, 95.0), 1) 
         
         # Display model checkpoint info
         st.info("📊 Model Information")

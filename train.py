@@ -31,14 +31,14 @@ def load_qa_pairs(json_path):
     print(f"Loaded {len(training_examples)} QA pairs from JSON")
     return training_examples
 
-# === STEP 2: Split the extracted text into chunks ===
+#  Split the extracted text into chunks 
 def create_chunks(extracted_data):
     text_splitter = RecursiveCharacterTextSplitter(chunk_size=500, chunk_overlap=50)
     return text_splitter.split_documents(extracted_data)
 
 text_chunks = create_chunks("")
 
-# === STEP 3: Generate Q&A pairs ===
+#  Generate Q&A pairs 
 def generate_qa_pairs_from_chunks(chunks):
     qa_pairs = []
     
@@ -54,7 +54,7 @@ def generate_qa_pairs_from_chunks(chunks):
 
 qa_pairs = generate_qa_pairs_from_chunks(text_chunks)
 
-# === STEP 4: Save the Q&A pairs to a JSON file ===
+# Save the Q&A pairs to a JSON file
 def save_qa_pairs_to_json(qa_pairs, filename="qa_pairs.json"):
     with open(filename, "w") as f:
         json.dump(qa_pairs, f, indent=4)
